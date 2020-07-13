@@ -21,3 +21,9 @@ jobs:
           name: Check test
           command:
             go test -v ./...
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - test
