@@ -1,5 +1,6 @@
 package gorean
 
+// http://www.w3c.or.kr/i18n/hangul-i18n/ko-code.html
 var (
 	koreanDoubleJaumMap = map[string]bool{
 		"ㄲ": true,

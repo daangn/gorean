@@ -185,7 +185,7 @@ func Test_JoinTokens(t *testing.T) {
 	assert.Equal(t, dummyJoinTokensAnswerFourKoreanAlphabets, strFourKoreanAlphabets, "empty")
 }
 
-func Test_IsAbleToCompose(t *testing.T) {
+func Test_IsAbleToComposeAlphabetsForSingleCharacter(t *testing.T) {
 	startAlphabet := rune('가')
 	endAlphabet := rune('힣')
 
