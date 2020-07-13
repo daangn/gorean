@@ -1,17 +1,5 @@
 package gorean
 
-/*
-@Title
-	korean token splitter
-@Description
-	ruby 'korean-string(https://github.com/bhumphreys/korean-string)' is transported with go
-@Reference
-- main reference
-	- https://www.bada-ie.com/board/view/?page=9&uid=1782&category_code=&code=all
-- sub reference
-	1. http://www.w3c.or.kr/i18n/hangul-i18n/ko-code.html
-*/
-
 var (
 	koreanDoubleJaumMap = map[string]bool{
 		"ㄲ": true,
