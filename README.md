@@ -1,3 +1,13 @@
+[![daangn](https://circleci.com/gh/daangn/gorean.svg?style=svg)](https://github.com/daangn/gorean)
+
+[![GitHub release](https://img.shields.io/github/release/daangn/gorean.svg)](https://GitHub.com/daangn/gorean/releases/)
+
+[![Github all releases](https://img.shields.io/github/downloads/daangn/gorean/total.svg)](https://GitHub.com/daangn/gorean/releases/)
+
+[![GitHub contributors](https://img.shields.io/github/contributors/daangn/gorean.svg)](https://GitHub.com/daangn/gorean/graphs/contributors/)
+
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
 # gorean
 한글 분석 유틸리티 golang 라이브러리.
 
