@@ -5,8 +5,15 @@ import (
 	"strings"
 )
 
-// SplitKorean disassemble sentence of korean
-func SplitKorean(str string, onlyKorean bool) ([][]string, error) {
+type SplitOpt int16
+
+const (
+	SplitOptBasic SplitOpt = iota
+	SplitOptGetOnlyKorean
+)
+
+// Split disassemble sentence of korean
+func Split(str string, opt SplitOpt) ([][]string, error) {
 	runes := []rune(str)
 	var words [][]string
 	for _, r := range runes {
@@ -26,7 +33,7 @@ func SplitKorean(str string, onlyKorean bool) ([][]string, error) {
 				tokens = append(tokens, koreanJongsung[jongsungIndex])
 			}
 		} else {
-			if onlyKorean != true {
+			if opt != SplitOptGetOnlyKorean {
 				tokens = append(tokens, string(r))
 			}
 		}
@@ -51,21 +58,16 @@ func IsAbleToComposeAlphabetsForSingleCharacter(tokens []string) bool {
 // FindNoneKoreanAlphabetsForSingleCharacter find offset about none korean alphabets for single character
 func FindNoneKoreanAlphabetsForSingleCharacter(tokens []string) []int {
 	runes := []rune(strings.Join(tokens, ""))
-	const (
-		chosungIndex  = 0
-		jungsungIndex = 1
-		jongsungIndex = 2
-	)
 
 	var offset []int
 	for i, r := range runes {
-		if i == chosungIndex && r != 0 && isKoreanToken(r, CHOSUNG) == false {
+		if i == chosungIndex && r != 0 && isKoreanToken(r, typeChosung) == false {
 			offset = append(offset, chosungIndex)
 		}
-		if i == jungsungIndex && r != 0 && isKoreanToken(r, JUNGSUNG) == false {
+		if i == jungsungIndex && r != 0 && isKoreanToken(r, typeJungsung) == false {
 			offset = append(offset, jungsungIndex)
 		}
-		if i == jongsungIndex && r != 0 && isKoreanToken(r, JONGSUNG) == false {
+		if i == jongsungIndex && r != 0 && isKoreanToken(r, typeJongsung) == false {
 			offset = append(offset, jongsungIndex)
 		}
 	}

@@ -2,13 +2,11 @@ package gorean
 
 import (
 	"fmt"
-	"sort"
 )
 
 // GenerateEdgeNGramTokens is for creating forward match at service
 func GenerateEdgeNGramTokens(str string) ([]string, error) {
 	var tokens []string
-
 	var stackedKeywords []string
 	argRunes := []rune(str)
 	for alphabetPos := range argRunes {
@@ -18,7 +16,7 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 		}
 		stackedKeywords = append(stackedKeywords, string(stack))
 	}
-	splits, err := SplitKorean(str, false)
+	splits, err := Split(str, SplitOptBasic)
 	if err != nil {
 		return tokens, err
 	}
@@ -32,7 +30,7 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 
 		lenSplit := len(split)
 		for splitPos := 0; splitPos < lenSplit; splitPos++ {
-			// 초성일때, whitespace가 아니며, 한글 일 경우에만
+			// 초성 일 때, whitespace 가 아니며, 한글 일 경우
 			if splitPos == 0 && split[0] != " " && isKoreanHex(int64(argRunes[splitIndex])) {
 				chosung := split[0]
 				if coupleJaumFirst := koreanCoupleJaumFirstMap[chosung]; coupleJaumFirst != "" {
@@ -112,29 +110,4 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 		}
 	}
 	return tokens, nil
-}
-
-// SortStringArray can sort any strings
-func SortStringArray(ary []string, desc bool) []string {
-	sort.Slice(ary, func(i, j int) bool {
-		var (
-			prevScore int64
-			currScore int64
-		)
-		prev := []rune(ary[i])
-		curr := []rune(ary[j])
-
-		for _, pr := range prev {
-			prevScore += int64(pr)
-		}
-		for _, cr := range curr {
-			currScore += int64(cr)
-		}
-		if desc {
-			return currScore < prevScore
-		}
-		return currScore > prevScore
-
-	})
-	return ary
 }

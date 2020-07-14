@@ -7,30 +7,30 @@ import (
 )
 
 var (
-	dummySplitKoreanQuestionEmpty = ""
-	dummySplitKoreanAnswerEmpty   [][]string
+	dummySplitQuestionEmpty = ""
+	dummySplitAnswerEmpty   [][]string
 
-	dummySplitKoreanQuestionWhitespace = " "
-	dummySplitKoreanAnswerWhitespace   = [][]string{[]string{" "}}
+	dummySplitQuestionWhitespace = " "
+	dummySplitAnswerWhitespace   = [][]string{[]string{" "}}
 
-	dummySplitKoreanQuestionTripleWhitespace = "   "
-	dummySplitKoreanAnswerTripleWhitespace   = [][]string{[]string{" "}, []string{" "}, []string{" "}}
+	dummySplitQuestionTripleWhitespace = "   "
+	dummySplitAnswerTripleWhitespace   = [][]string{[]string{" "}, []string{" "}, []string{" "}}
 
-	dummySplitKoreanQuestionSingleKoreanWord = "가"
-	dummySplitKoreanAnswerSingleKoreanWord   = [][]string{
+	dummySplitQuestionSingleKoreanWord = "가"
+	dummySplitAnswerSingleKoreanWord   = [][]string{
 		[]string{"ㄱ", "ㅏ"},
 	}
 
-	dummySplitKoreanQuestionKoreanWord = "당근마켓"
-	dummySplitKoreanAnswerKoreanWord   = [][]string{
+	dummySplitQuestionKoreanWord = "당근마켓"
+	dummySplitAnswerKoreanWord   = [][]string{
 		[]string{"ㄷ", "ㅏ", "ㅇ"},
 		[]string{"ㄱ", "ㅡ", "ㄴ"},
 		[]string{"ㅁ", "ㅏ"},
 		[]string{"ㅋ", "ㅔ", "ㅅ"},
 	}
 
-	dummySplitKoreanQuestionKoreanWordWithWhitespace = " 당신의 근처 "
-	dummySplitKoreanAnswerKoreanWordWithWhitespace   = [][]string{
+	dummySplitQuestionKoreanWordWithWhitespace = " 당신의 근처 "
+	dummySplitAnswerKoreanWordWithWhitespace   = [][]string{
 		[]string{" "},
 		[]string{"ㄷ", "ㅏ", "ㅇ"},
 		[]string{"ㅅ", "ㅣ", "ㄴ"},
@@ -41,8 +41,8 @@ var (
 		[]string{" "},
 	}
 
-	dummySplitKoreanQuestionEnglish = "karrot"
-	dummySplitKoreanAnswerEnglish   = [][]string{
+	dummySplitQuestionEnglish = "karrot"
+	dummySplitAnswerEnglish   = [][]string{
 		[]string{"k"},
 		[]string{"a"},
 		[]string{"r"},
@@ -51,8 +51,8 @@ var (
 		[]string{"t"},
 	}
 
-	dummySplitKoreanQuestionKoreanAndEnglish = "karrot마켓"
-	dummySplitKoreanAnswerKoreanAndEnglish   = [][]string{
+	dummySplitQuestionKoreanAndEnglish = "karrot마켓"
+	dummySplitAnswerKoreanAndEnglish   = [][]string{
 		[]string{"k"},
 		[]string{"a"},
 		[]string{"r"},
@@ -63,8 +63,8 @@ var (
 		[]string{"ㅋ", "ㅔ", "ㅅ"},
 	}
 
-	dummySplitKoreanQuestionKoreanAndEnglishWithWhitespace = " karrot  마켓 "
-	dummySplitKoreanAnswerKoreanAndEnglishWithWhitespace   = [][]string{
+	dummySplitQuestionKoreanAndEnglishWithWhitespace = " karrot  마켓 "
+	dummySplitAnswerKoreanAndEnglishWithWhitespace   = [][]string{
 		[]string{" "},
 		[]string{"k"},
 		[]string{"a"},
@@ -80,41 +80,41 @@ var (
 	}
 )
 
-func Test_SplitKorean(t *testing.T) {
-	strEmpty, err := SplitKorean(dummySplitKoreanQuestionEmpty, false)
-	assert.Equal(t, dummySplitKoreanAnswerEmpty, strEmpty, "emptyString")
+func Test_Split(t *testing.T) {
+	strEmpty, err := Split(dummySplitQuestionEmpty, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerEmpty, strEmpty, "emptyString")
 	assert.Empty(t, err)
 
-	strWhitespace, err := SplitKorean(dummySplitKoreanQuestionWhitespace, false)
-	assert.Equal(t, dummySplitKoreanAnswerWhitespace, strWhitespace, "single white space")
+	strWhitespace, err := Split(dummySplitQuestionWhitespace, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerWhitespace, strWhitespace, "single white space")
 	assert.Empty(t, err)
 
-	strTripleWhitespace, err := SplitKorean(dummySplitKoreanQuestionTripleWhitespace, false)
-	assert.Equal(t, dummySplitKoreanAnswerTripleWhitespace, strTripleWhitespace, "multiple white space")
+	strTripleWhitespace, err := Split(dummySplitQuestionTripleWhitespace, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerTripleWhitespace, strTripleWhitespace, "multiple white space")
 	assert.Empty(t, err)
 
-	strSingleKoreanWord, err := SplitKorean(dummySplitKoreanQuestionSingleKoreanWord, false)
-	assert.Equal(t, dummySplitKoreanAnswerSingleKoreanWord, strSingleKoreanWord, "multiple white space")
+	strSingleKoreanWord, err := Split(dummySplitQuestionSingleKoreanWord, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerSingleKoreanWord, strSingleKoreanWord, "multiple white space")
 	assert.Empty(t, err)
 
-	strKoreanWord, err := SplitKorean(dummySplitKoreanQuestionKoreanWord, false)
-	assert.Equal(t, dummySplitKoreanAnswerKoreanWord, strKoreanWord, "korean word")
+	strKoreanWord, err := Split(dummySplitQuestionKoreanWord, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerKoreanWord, strKoreanWord, "korean word")
 	assert.Empty(t, err)
 
-	strKoreanWordWithWhitespace, err := SplitKorean(dummySplitKoreanQuestionKoreanWordWithWhitespace, false)
-	assert.Equal(t, dummySplitKoreanAnswerKoreanWordWithWhitespace, strKoreanWordWithWhitespace, "korean word with whitespace")
+	strKoreanWordWithWhitespace, err := Split(dummySplitQuestionKoreanWordWithWhitespace, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerKoreanWordWithWhitespace, strKoreanWordWithWhitespace, "korean word with whitespace")
 	assert.Empty(t, err)
 
-	strEnglish, err := SplitKorean(dummySplitKoreanQuestionEnglish, false)
-	assert.Equal(t, dummySplitKoreanAnswerEnglish, strEnglish, "english word")
+	strEnglish, err := Split(dummySplitQuestionEnglish, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerEnglish, strEnglish, "english word")
 	assert.Empty(t, err)
 
-	strKoreanAndEnglish, err := SplitKorean(dummySplitKoreanQuestionKoreanAndEnglish, false)
-	assert.Equal(t, dummySplitKoreanAnswerKoreanAndEnglish, strKoreanAndEnglish, "korean and english")
+	strKoreanAndEnglish, err := Split(dummySplitQuestionKoreanAndEnglish, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerKoreanAndEnglish, strKoreanAndEnglish, "korean and english")
 	assert.Empty(t, err)
 
-	strKoreanAndEnglishWithWhitespace, err := SplitKorean(dummySplitKoreanQuestionKoreanAndEnglishWithWhitespace, false)
-	assert.Equal(t, dummySplitKoreanAnswerKoreanAndEnglishWithWhitespace, strKoreanAndEnglishWithWhitespace, "korean and english with whitespace")
+	strKoreanAndEnglishWithWhitespace, err := Split(dummySplitQuestionKoreanAndEnglishWithWhitespace, SplitOptBasic)
+	assert.Equal(t, dummySplitAnswerKoreanAndEnglishWithWhitespace, strKoreanAndEnglishWithWhitespace, "korean and english with whitespace")
 	assert.Empty(t, err)
 }
 
@@ -192,7 +192,7 @@ func Test_IsAbleToComposeAlphabetsForSingleCharacter(t *testing.T) {
 	// test 가-힣
 	for c := startAlphabet; c <= endAlphabet; c = c + 1 {
 		s := string(c)
-		token, err := SplitKorean(s, true)
+		token, err := Split(s, SplitOptBasic)
 		isAble := IsAbleToComposeAlphabetsForSingleCharacter(token[0])
 		noneKoreanOffset := FindNoneKoreanAlphabetsForSingleCharacter(token[0])
 		assert.Empty(t, err)
@@ -208,7 +208,7 @@ func Test_SplitAndJoinComplete(t *testing.T) {
 	// test 가-힣
 	for c := startAlphabet; c <= endAlphabet; c = c + 1 {
 		s := string(c)
-		token, err := SplitKorean(s, true)
+		token, err := Split(s, SplitOptBasic)
 		assert.Empty(t, err)
 		tokenStr, err := JoinTokens(token[0])
 		assert.Empty(t, err)

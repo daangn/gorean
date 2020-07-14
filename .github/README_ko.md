@@ -1,0 +1,168 @@
+<p align="center">
+    <a href="https://github.com/daangn/gorean"><img src="https://camo.githubusercontent.com/3e224d221eae1953ae073b0050197faf4b4428af/68747470733a2f2f636972636c6563692e636f6d2f67682f6461616e676e2f676f7265616e2e7376673f7374796c653d737667" alt="daangn" data-canonical-src="https://circleci.com/gh/daangn/gorean.svg?style=svg" style="max-width:100%;"></a>
+    <a href="https://GitHub.com/daangn/gorean/releases/"><img src="https://camo.githubusercontent.com/de0de733bb357134d4a347556dd34a809a7a8ddf/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f72656c656173652f6461616e676e2f676f7265616e2e737667" alt="GitHub release" data-canonical-src="https://img.shields.io/github/release/daangn/gorean.svg" style="max-width:100%;"></a>
+    <a href="https://GitHub.com/daangn/gorean/releases/"><img src="https://camo.githubusercontent.com/f3808af4419bfd709a7e5abb0bf3a7f0f5009b29/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f646f776e6c6f6164732f6461616e676e2f676f7265616e2f746f74616c2e737667" alt="Github all releases" data-canonical-src="https://img.shields.io/github/downloads/daangn/gorean/total.svg" style="max-width:100%;"></a>
+    <a href="https:/
+/GitHub.com/daangn/gorean/graphs/contributors/"><img src="https://camo.githubusercontent.com/68dfce75e28f1c6bc86d7c97f0b9ec4bbce59036/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f636f6e7472696275746f72732f6461616e676e2f676f7265616e2e737667" alt="GitHub contributors" data-canonical-src="https://img.shields.io/github/contributors/daangn/gorean.svg" style="max-width:100%;"></a>
+    <a href="https://lbesson.mit-license.org/" rel="nofollow"><img src="https://camo.githubusercontent.com/311762166ef25238116d3cadd22fcb6091edab98/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d626c75652e737667" alt="MIT license" data-canonical-src="https://img.shields.io/badge/License-MIT-blue.svg" style="max-width:100%;"></a>
+</p>
+
+# 🇰🇷 Gorean
+
+golang native로 작성된 한글 분석 유틸리티 라이브러리 입니다.
+기본적으로 [ruby 'korean-string'](https://github.com/bhumphreys/korean-string)라이브러리를 golang으로 포팅한 라이브러리 이며,
+그 이외 한글 분석 유틸리티 도구들을 준비했습니다.
+해당 도구는 한글검색에 사용되는 한글분석 유틸리티를 모아둘 예정입니다.
+
+라이브러리의 코드는 [bada-ie](https://www.bada-ie.com/board/view/?page=9&uid=1782&category_code=&code=all) 님의 코드를 참고하여 구현하였으며,
+자세한 한글 인코딩 관련 정보는 [w3c-hangul-i18n](http://www.w3c.or.kr/i18n/hangul-i18n/ko-code.html)에서 열람하실 수 있습니다.
+
+# 🍗 Speed Cheat Sheet
+
+``` go
+package main
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/daangn/gorean"
+)
+
+func main() {
+	s := "  똠빵각하 5ri구이-  "
+	sk, err := gorean.Split(s, gorean.SplitOptBasic)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(sk)
+		// second parameter[onlyKorean]: gorean.SplitOptBasic
+		// [[ ] [ ] [ㄸ ㅗ ㅁ] [ㅃ ㅏ ㅇ] [ㄱ ㅏ ㄱ] [ㅎ ㅏ] [ ] [5] [r] [i] [ㄱ ㅜ] [ㅇ ㅣ] [-] [ ] [ ]]
+		// second parameter[onlyKorean]: gorean.SplitOptGetOnlyKorean
+		// [[ㄸ ㅗ ㅁ] [ㅃ ㅏ ㅇ] [ㄱ ㅏ ㄱ] [ㅎ ㅏ] [ㄱ ㅜ] [ㅇ ㅣ]]
+	}
+
+	var jt1 []string
+	var jt2 []string
+	for _, tokens := range sk {
+		// case: 1
+		if character, err := gorean.JoinTokens(tokens); err != nil {
+			fmt.Println(err)
+			/*
+				( ) has been out-ranged tokens for JoinKorean
+				( ) has been out-ranged tokens for JoinKorean
+				( ) has been out-ranged tokens for JoinKorean
+				(5) has been out-ranged tokens for JoinKorean
+				(r) has been out-ranged tokens for JoinKorean
+				(i) has been out-ranged tokens for JoinKorean
+				(-) has been out-ranged tokens for JoinKorean
+				( ) has been out-ranged tokens for JoinKorean
+				( ) has been out-ranged tokens for JoinKorean
+			*/
+		} else {
+			jt1 = append(jt1, character)
+		}
+
+		// case: 2
+		if gorean.IsAbleToComposeAlphabetsForSingleCharacter(tokens) {
+			character, _ := gorean.JoinTokens(tokens)
+			jt2 = append(jt2, character)
+		} else {
+			noneKoreanToken := gorean.FindNoneKoreanAlphabetsForSingleCharacter(tokens)
+			// you should write to something for exception existing none korean tokens
+			fmt.Printf("Error! positions [%v] at [%v]\n", tokens, noneKoreanToken)
+			/*
+				Error! positions [[ ]] at [[0]]
+				Error! positions [[ ]] at [[0]]
+				Error! positions [[ ]] at [[0]]
+				Error! positions [[5]] at [[0]]
+				Error! positions [[r]] at [[0]]
+				Error! positions [[i]] at [[0]]
+				Error! positions [[-]] at [[0]]
+				Error! positions [[ ]] at [[0]]
+				Error! positions [[ ]] at [[0]]
+			*/
+		}
+	}
+	fmt.Printf("jt1 output => %s\n", strings.Join(jt1, "")) // 똠빵각하구이
+	fmt.Printf("jt2 output => %s\n", strings.Join(jt2, "")) // 똠빵각하구이
+
+	if edgeNGram, err := gorean.GenerateEdgeNGramTokens(s); err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(edgeNGram)
+		/*
+			// Warning: Including whitespace each items at []string, It didn't Trim
+			[       ㄷ   ㄸ   또   똠   똠ㅂ   똠ㅃ   똠빠   똠빵   똠빵ㄱ   똠빵가   똠빵각   똠빵각ㅎ   똠빵각하   똠빵각하    똠빵각하 5   똠빵각하 5r   똠빵각하 5ri   똠빵각하 5riㄱ   똠빵각하 5ri구   똠빵각하 5ri궁   똠빵각하 5ri구ㅇ   똠빵각하 5ri구이   똠빵각하 5ri구이-   똠빵각하 5ri구이-    똠빵각하 5ri구이-  ]
+		*/
+	}
+
+	messKoreanSort := []string{
+		"하기스",
+		"김치볶음밥",
+		"사자왕왕",
+		"자루소바오이시",
+		"왕초",
+		"밥상머리",
+		"까치꾸치",
+		"마장동",
+		"동백",
+	}
+	gorean.Sort(messKoreanSort, gorean.SortOptAscPivotFirst)
+	fmt.Println(messKoreanSort) // [김치볶음밥 까치꾸치 동백 마장동 밥상머리 사자왕왕 왕초 자루소바오이시 하기스]
+}
+
+```
+
+# 🍱 API Summary
+
+``` go
+- func gorean.Split([]string, SplitOpt)
+    - type SplitOpt gorean.SplitOptBasic
+    - type SplitOpt gorean.SplitOptGetOnlyKorean
+- func gorean.JoinTokens([]string) // 2 <= len(ary) <= 3
+- func gorean.IsAbleToComposeAlphabetsForSingleCharacter([]string) // 2 <= len(ary) <= 3
+- func gorean.FindNoneKoreanAlphabetsForSingleCharacter([]string) // 2 <= len(ary) <= 3
+- func gorean.GenerateEdgeNGramTokens(string)
+- func gorean.Sort([]string, SortOpt)
+    - type SortOpt gorean.SortOptAsc
+    - type SortOpt gorean.SortOptDesc
+    - type SortOpt gorean.SortOptAscPivotFirst
+    - type SortOpt gorean.SortOptDescPivotFirst
+```
+
+#### gorean.Split
+- 입력값으로 장문의 문자열을 받을 수 있으며, 각각 한글자에 따른 2개~3개의 elements로 되어있는 자모 배열이 나오게 되며, 결과값은 이중배열이 나오게 된다.
+
+#### gorean.JoinTokens
+- 입력값으로 주어질 배열 2개~3개의 string들이 되어있는 배열을 조합해서 하나의 한글 조합문자열을 만든다.
+
+#### gorean.IsAbleToComposeAlphabetsForSingleCharacter
+- 입력값으로 주어질 배열 2개~3개의 string들이 되어있는 배열이 한국어 조합글자가 될 수 있는지 에 대한 검증코드
+- 디버깅 목적으로 만듬, JoinTokens를 하기 이전에 체크해보고 넘어 가라고 만듬
+
+#### gorean.FindNoneKoreanAlphabetsForSingleCharacter
+- 입력값으로 주어질 배열 2개~3개의 string들이 되어있는 배열에 한글 자모가 아닌 글자가 포함되어있는지 확인하는 디버깅 코드
+- 디버깅 목적으로 만듬, IsAbleToComposeAlphabetsForSingleCharacter에서 false일 때에 사용하도록 의도
+
+#### gorean.GenerateEdgeNGramTokens
+- 한글 EdgeNGram 및 전방일치 토크나이저를 얻기위해 만듬
+- 강남역 => [ㄱ,가,강,강ㄴ,강나,강남,강남ㅇ,강남여,강남역]
+
+#### gorean.Sort
+- 문자열 정렬을 위해 존재함. 정렬의 다양한 옵션 제공
+
+
+# ☕️ PR
+- 메서드 네이밍이 구리니 제발 좋은 이름 추천부탁드려요. 흑 ; ㅅ ;
+- 뭔가 추가 해줬으면 하는게 있거나, 변경했으면 하는게 있으면 언제든지 이슈 및 PR 보내주세요.
+
+# Release note
+
+- `v0.0.3`[Todo]
+    1. `Sort()` 옵션: 정확한 `문자열길이 우선 정렬`, `전방문자 우선 정렬` 기능 옵션 변경
+    2. 기능추가 초성 검색, `Chosung()`
+- `v0.0.2`[Latest]
+    1. 메서드 이름 변경 및 `Split()`, `Sort()` 에서 옵션값을 type으로 지정,
+    2. `Sort()` 한글 문자열 정렬 시 첫 글자로만 문자열 정렬할 수 있는 기능 추가
+- `v0.0.1`: 기본라이브러리 API 제공

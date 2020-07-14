@@ -228,8 +228,8 @@ var (
 	}
 
 	//koreanChosungLen  = int64(19) // int64(len(koreanCh))
-	koreanJungsungLen = int64(21) // int64(len(JUNGSUNG))
-	koreanJongsungLen = int64(28) // int64(len(JONGSUNG))
+	koreanJungsungLen = int64(21) // int64(len(jungsung))
+	koreanJongsungLen = int64(28) // int64(len(jongsung))
 )
 
 const (

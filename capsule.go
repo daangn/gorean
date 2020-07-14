@@ -10,9 +10,9 @@ type TokenType string
 
 // These are TokenTypes
 const (
-	CHOSUNG  TokenType = "chosung"
-	JUNGSUNG TokenType = "jungsung"
-	JONGSUNG TokenType = "jongsung"
+	typeChosung  TokenType = "chosung"
+	typeJungsung TokenType = "jungsung"
+	typeJongsung TokenType = "jongsung"
 )
 
 func isChosungHex(hex int64) bool {
@@ -45,11 +45,11 @@ func isKoreanToken(r rune, ktt TokenType) bool {
 	if err != nil {
 		return false
 	}
-	if ktt == CHOSUNG && isChosungHex(hex) {
+	if ktt == typeChosung && isChosungHex(hex) {
 		return true
-	} else if ktt == JUNGSUNG && isJungsungHex(hex) {
+	} else if ktt == typeJungsung && isJungsungHex(hex) {
 		return true
-	} else if ktt == JONGSUNG && isJongsungHex(hex) {
+	} else if ktt == typeJongsung && isJongsungHex(hex) {
 		return true
 	}
 	return false
