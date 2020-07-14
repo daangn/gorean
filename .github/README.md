@@ -7,15 +7,16 @@
     <a href="https://lbesson.mit-license.org/" rel="nofollow"><img src="https://camo.githubusercontent.com/311762166ef25238116d3cadd22fcb6091edab98/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d626c75652e737667" alt="MIT license" data-canonical-src="https://img.shields.io/badge/License-MIT-blue.svg" style="max-width:100%;"></a>
 </p>
 
-# 🇰🇷 Gorean
+<h1 align="center"><a id="user-content--gorean" class="anchor" aria-hidden="true" href="#-gorean"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><g-emoji class="g-emoji" alias="kr" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f1f0-1f1f7.png">🇰🇷</g-emoji> Gorean</h1>
 
-golang native로 작성된 한글 분석 유틸리티 라이브러리 입니다.
-기본적으로 [ruby 'korean-string'](https://github.com/bhumphreys/korean-string)라이브러리를 golang으로 포팅한 라이브러리 이며,
+<p align="center">golang native로 작성된 한글 분석 유틸리티 라이브러리 입니다.
+기본적으로 <a href="https://github.com/bhumphreys/korean-string">ruby 'korean-string'</a>라이브러리를 golang으로 포팅한 라이브러리 이며,
 그 이외 한글 분석 유틸리티 도구들을 준비했습니다.
-해당 도구는 한글검색에 사용되는 한글분석 유틸리티를 모아둘 예정입니다.
+해당 도구는 한글검색에 사용되는 한글분석 유틸리티를 모아둘 예정입니다.</p>
 
-라이브러리의 코드는 [bada-ie](https://www.bada-ie.com/board/view/?page=9&uid=1782&category_code=&code=all) 님의 코드를 참고하여 구현하였으며,
-자세한 한글 인코딩 관련 정보는 [w3c-hangul-i18n](http://www.w3c.or.kr/i18n/hangul-i18n/ko-code.html)에서 열람하실 수 있습니다.
+<p align="center">라이브러리의 코드는 <a href="https://www.bada-ie.com/board/view/?page=9&amp;uid=1782&amp;category_code=&amp;code=all" rel="nofollow">bada-ie</a> 님의 코드를 참고하여 구현하였으며,
+자세한 한글 인코딩 관련 정보는 <a href="http://www.w3c.or.kr/i18n/hangul-i18n/ko-code.html" rel="nofollow">w3c-hangul-i18n</a>에서 열람하실 수 있습니다.</p>
+
 
 # 🍗 Speed Cheat Sheet
 
@@ -152,11 +153,6 @@ func main() {
 #### gorean.Sort
 - 문자열 정렬을 위해 존재함. 정렬의 다양한 옵션 제공
 
-
-# ☕️ PR
-- 메서드 네이밍이 구리니 제발 좋은 이름 추천부탁드려요. 흑 ; ㅅ ;
-- 뭔가 추가 해줬으면 하는게 있거나, 변경했으면 하는게 있으면 언제든지 이슈 및 PR 보내주세요.
-
 # Release note
 
 - `v0.0.3`[Todo]
@@ -166,3 +162,13 @@ func main() {
     1. 메서드 이름 변경 및 `Split()`, `Sort()` 에서 옵션값을 type으로 지정,
     2. `Sort()` 한글 문자열 정렬 시 첫 글자로만 문자열 정렬할 수 있는 기능 추가
 - `v0.0.1`: 기본라이브러리 API 제공
+
+# 👍 Contribute
+
+- @drake-jin 은 부족한게 많습니다. 피드백은 언제나 환영이에요.
+- 뭔가 추가 해줬으면 하는게 있거나, 변경했으면 하는게 있으면 언제든지 이슈 및 PR 보내주세요. 특별한 일 없으면 **2일안에** 반영해드릴게요.
+
+만약 이 라이브러리 daangn/gorean을 잘 사용하셨다면...
+
+1. [GitHub Star](https://github.com/daangn/gorean/stargazers)
+2. 이직각을 재고 계시다면 🥕[당근마켓](https://www.notion.so/daangn/2c789a2c7b1a4cfca40b11afba678315)🥕
