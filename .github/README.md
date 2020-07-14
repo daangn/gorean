@@ -153,7 +153,7 @@ func main() {
 #### gorean.Sort
 - 문자열 정렬을 위해 존재함. 정렬의 다양한 옵션 제공
 
-# Release note
+# 📝 Release note
 
 - `v0.0.3`[Todo]
     1. `Sort()` 옵션: 정확한 `문자열길이 우선 정렬`, `전방문자 우선 정렬` 기능 옵션 변경
