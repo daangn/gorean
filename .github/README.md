@@ -111,6 +111,10 @@ func main() {
 	}
 	gorean.Sort(messKoreanSort, gorean.SortOptAsc)
 	fmt.Println(messKoreanSort) // [김치볶음밥 까치꾸치 동백 마장동 밥상머리 사자왕왕 왕초 자루소바오이시 하기스]
+
+	koreanWithEnglish := "초성퀴즈 with English"
+	chosung, _ := gorean.Chosung(koreanWithEnglish)
+	fmt.Println(strings.Join(chosung, ""))
 }
 
 ```
