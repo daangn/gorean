@@ -31,6 +31,7 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 		lenSplit := len(split)
 		for splitPos := 0; splitPos < lenSplit; splitPos++ {
 			// 초성 일 때, whitespace 가 아니며, 한글 일 경우
+
 			if splitPos == 0 && split[0] != " " && isKoreanHex(int64(argRunes[splitIndex])) {
 				chosung := split[0]
 				if coupleJaumFirst := koreanCoupleJaumFirstMap[chosung]; coupleJaumFirst != "" {
@@ -60,10 +61,8 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 						}
 					}
 				}
-			}
-
-			// Jungsung - add single Moum when it couple Moum token
-			if splitPos == 1 {
+			} else if splitPos == 1 {
+				// Jungsung - add single Moum when it couple Moum token
 				jungsung := split[1]
 				if coupleMoumFirst := koreanCoupleMoumFirstMap[jungsung]; coupleMoumFirst != "" {
 					alphabets := []string{split[0], coupleMoumFirst}
@@ -74,10 +73,8 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 						tokens = append(tokens, stackedKeyword+joinAlphabet)
 					}
 				}
-			}
-
-			// Jongsung - add single Jaum when it couple Jaum token
-			if splitPos == 2 {
+			} else if splitPos == 2 {
+				// Jongsung - add single Jaum when it couple Jaum token
 				jongsung := split[2]
 				if coupleJaumFirst := koreanCoupleJaumFirstMap[jongsung]; coupleJaumFirst != "" {
 					alphabets := []string{split[0], split[1], coupleJaumFirst}
@@ -89,25 +86,53 @@ func GenerateEdgeNGramTokens(str string) ([]string, error) {
 					}
 				}
 			}
+			tokens = basicGenerateToken(tokens, split, &stackedKeyword, splitPos, &str)
 
-			// base - generate token
-			var stack []string
-			token := stackedKeyword
-			for subSplitPos := 0; subSplitPos <= splitPos; subSplitPos++ {
-				stack = append(stack, split[subSplitPos])
-			}
-			if splitPos == 0 {
-				token += stack[0]
-			} else {
-				if joinToken, joinTokenErr := JoinTokens(stack); joinTokenErr != nil {
-					// Allow to skip
-					fmt.Printf("조건 없는 split을 한 token의 조합 중 토큰조합 실패: %s, %s\n%v\n", str, stack, joinTokenErr)
-				} else {
-					token += joinToken
-				}
-			}
-			tokens = append(tokens, token)
+			//// base - generate token
+			//var stack []string
+			//token := stackedKeyword
+			//for subSplitPos := 0; subSplitPos <= splitPos; subSplitPos++ {
+			//	stack = append(stack, split[subSplitPos])
+			//}
+			//if splitPos == 0 {
+			//	token += split[splitPos]
+			//} else {
+			//	if joinToken, joinTokenErr := JoinTokens(stack); joinTokenErr != nil {
+			//		// Allow to skip
+			//		fmt.Printf("조건 없는 split을 한 token의 조합 중 토큰조합 실패: %s, %s\n%v\n", str, stack, joinTokenErr)
+			//	} else {
+			//		token += joinToken
+			//	}
+			//}
+			//tokens = append(tokens, token)
 		}
 	}
 	return tokens, nil
+}
+
+// basicGenerateToken is able to get basic ngram tokens
+// tokens is result array
+// split is strings about a single character
+// stackedKeyword is single ngram item
+// splitPos is one of Chosung, Jungsung and Jongsung
+// str is whole string of target string
+func basicGenerateToken(tokens []string, split []string, stackedKeyword *string, splitPos int, str *string) []string {
+	// base - generate token
+	var stack []string
+	token := *stackedKeyword
+	for subSplitPos := 0; subSplitPos <= splitPos; subSplitPos++ {
+		stack = append(stack, split[subSplitPos])
+	}
+	if splitPos == 0 {
+		token += split[splitPos]
+	} else {
+		if joinToken, joinTokenErr := JoinTokens(stack); joinTokenErr != nil {
+			// Allow to skip
+			fmt.Printf("조건 없는 split을 한 token의 조합 중 토큰조합 실패: %s, %s\n%v\n", *str, stack, joinTokenErr)
+		} else {
+			token += joinToken
+		}
+	}
+	tokens = append(tokens, token)
+	return tokens
 }

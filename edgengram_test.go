@@ -28,8 +28,8 @@ var (
 	dummyAnswerGenerateEdgeNGramTokensKoreanWithWhitespace   = []string{
 		"ㅁ",
 		"마",
-		"맏",
 		"마ㄷ",
+		"맏",
 		"마ㄸ",
 		"마따",
 		"마따 ",
@@ -95,26 +95,21 @@ var (
 func Test_GenerateForwardNGramTokens(t *testing.T) {
 	tokensKorean, err := GenerateEdgeNGramTokens(dummyQuestionGenerateEdgeNGramTokensKorean)
 	assert.Empty(t, err)
-	sortedKorean := Sort(tokensKorean, SortOptAsc)
-	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKorean, sortedKorean, "")
+	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKorean, tokensKorean, "")
 
 	tokensKoreanWithWhitespace, err := GenerateEdgeNGramTokens(dummyQuestionGenerateEdgeNGramTokensKoreanWithWhitespace)
 	assert.Empty(t, err)
-	sortedKoreanWithWhitespace := Sort(tokensKoreanWithWhitespace, SortOptAsc)
-	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKoreanWithWhitespace, sortedKoreanWithWhitespace, "equal")
+	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKoreanWithWhitespace, tokensKoreanWithWhitespace, "equal")
 
 	tokensKoreanWithEnglish, err := GenerateEdgeNGramTokens(dummyQuestionGenerateEdgeNGramTokensKoreanWithEnglish)
 	assert.Empty(t, err)
-	sortedKoreanWithEnglish := Sort(tokensKoreanWithEnglish, SortOptAsc)
-	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKoreanWithEnglish, sortedKoreanWithEnglish, "equal")
+	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensKoreanWithEnglish, tokensKoreanWithEnglish, "equal")
 
 	tokensSameJaumAtJongsungChosungCase1, err := GenerateEdgeNGramTokens(dummyQuestionGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase1)
 	assert.Empty(t, err)
-	sortedSameJaumAtJongsungChosungCase1 := Sort(tokensSameJaumAtJongsungChosungCase1, SortOptAsc)
-	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase1, sortedSameJaumAtJongsungChosungCase1, "equal")
+	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase1, tokensSameJaumAtJongsungChosungCase1, "equal")
 
 	tokensSameJaumAtJongsungChosungCase2, err := GenerateEdgeNGramTokens(dummyQuestionGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase2)
 	assert.Empty(t, err)
-	sortedSameJaumAtJongsungChosungCase2 := Sort(tokensSameJaumAtJongsungChosungCase2, SortOptAsc)
-	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase2, sortedSameJaumAtJongsungChosungCase2, "equal")
+	assert.Equal(t, dummyAnswerGenerateEdgeNGramTokensSameJaumAtJongsungChosungCase2, tokensSameJaumAtJongsungChosungCase2, "equal")
 }
