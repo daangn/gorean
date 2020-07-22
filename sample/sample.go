@@ -90,6 +90,9 @@ func main() {
 	fmt.Println(messKoreanSort) // [김치볶음밥 까치꾸치 동백 마장동 밥상머리 사자왕왕 왕초 자루소바오이시 하기스]
 
 	koreanWithEnglish := "초성퀴즈 with English"
-	chosung, _ := gorean.Chosung(koreanWithEnglish)
-	fmt.Println(strings.Join(chosung, ""))
+	korean := gorean.Korean(koreanWithEnglish, 10)
+	fmt.Println(korean) // 초성퀴즈
+
+	chosung, _ := gorean.Chosung(strings.Join(korean, " "))
+	fmt.Println(strings.Join(chosung, "")) // ㅊㅅㅋㅈ
 }

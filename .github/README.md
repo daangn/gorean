@@ -113,8 +113,11 @@ func main() {
 	fmt.Println(messKoreanSort) // [김치볶음밥 까치꾸치 동백 마장동 밥상머리 사자왕왕 왕초 자루소바오이시 하기스]
 
 	koreanWithEnglish := "초성퀴즈 with English"
-	chosung, _ := gorean.Chosung(koreanWithEnglish)
-	fmt.Println(strings.Join(chosung, ""))
+	korean := gorean.Korean(koreanWithEnglish, 10)
+	fmt.Println(korean) // 초성퀴즈
+
+	chosung, _ := gorean.Chosung(strings.Join(korean, " "))
+	fmt.Println(strings.Join(chosung, "")) // ㅊㅅㅋㅈ
 }
 
 ```
@@ -157,12 +160,14 @@ func main() {
 
 # 📝 Release note
 
-- `v0.0.3` **[Latest]**
-    1. `Sort()` 옵션: 정확한 `문자열길이 우선 정렬`, `전방문자 우선 정렬` 기능 옵션 변경
-- `v0.1.0` [ToDo]
+- `v0.0.5` **[Latest Release]**
     1. 기능추가 초성 얻기, `Chosung()`
-    2. 기능추가 영어자판 to 한글 
-    3. 기능추가 한글자판 to 영어자판
+    2. 기능추가 한글 찾기, `Korean()`
+- `v0.0.6` [ToDo]
+    1. 기능추가 영어자판 to 한글 
+    2. 기능추가 한글자판 to 영어자판
+- `v0.0.7`
+    1. 기능업그레이드: 한글 찾기, (flash-text)[https://medium.com/@jwyeom63/%EB%B2%88%EC%97%AD-%EC%A0%95%EA%B7%9C%ED%91%9C%ED%98%84%EC%8B%9D%EC%9C%BC%EB%A1%9C-5%EC%9D%BC-%EA%B1%B8%EB%A6%AC%EB%8A%94-%EC%9E%91%EC%97%85-15%EB%B6%84%EB%A7%8C%EC%97%90-%EB%81%9D%EB%82%B4%EA%B8%B0-2e615a907048] 알고리즘을 이용해 한글찾기 개선
 - `v0.1.1` [ToDo]
     1. benchmark 검증 및 성능 최적화
 
