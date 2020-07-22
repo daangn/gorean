@@ -109,7 +109,7 @@ func main() {
 		"마장동",
 		"동백",
 	}
-	gorean.Sort(messKoreanSort, gorean.SortOptAscPivotFirst)
+	gorean.Sort(messKoreanSort, gorean.SortOptAsc)
 	fmt.Println(messKoreanSort) // [김치볶음밥 까치꾸치 동백 마장동 밥상머리 사자왕왕 왕초 자루소바오이시 하기스]
 }
 
@@ -128,8 +128,6 @@ func main() {
 - func gorean.Sort([]string, SortOpt)
     - type SortOpt gorean.SortOptAsc
     - type SortOpt gorean.SortOptDesc
-    - type SortOpt gorean.SortOptAscPivotFirst
-    - type SortOpt gorean.SortOptDescPivotFirst
 ```
 
 #### gorean.Split
