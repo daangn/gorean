@@ -1,6 +1,7 @@
 package gorean
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -116,4 +117,103 @@ func Test_Split(t *testing.T) {
 	strKoreanAndEnglishWithWhitespace, err := Split(dummySplitQuestionKoreanAndEnglishWithWhitespace, SplitOptBasic)
 	assert.Equal(t, dummySplitAnswerKoreanAndEnglishWithWhitespace, strKoreanAndEnglishWithWhitespace, "korean and english with whitespace")
 	assert.Empty(t, err)
+}
+
+func TestSplitToString(t *testing.T) {
+	type args struct {
+		str                string
+		opt                SplitOpt
+		ignoreSeparators   bool
+		ignoreCases        bool
+		ignoreSpecialChars bool
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr assert.ErrorAssertionFunc
+	}{
+		{
+			name: "empty string",
+			args: args{
+				str:                dummySplitQuestionEmpty,
+				opt:                SplitOptBasic,
+				ignoreSeparators:   false,
+				ignoreCases:        false,
+				ignoreSpecialChars: false,
+			},
+			want:    "",
+			wantErr: assert.NoError,
+		},
+		{
+			name: "with double consonant",
+			args: args{
+				str:                "앎은 힘이다.",
+				opt:                SplitOptBasic,
+				ignoreSeparators:   false,
+				ignoreCases:        false,
+				ignoreSpecialChars: false,
+			},
+			want:    "ㅇㅏㄻㅇㅡㄴ ㅎㅣㅁㅇㅣㄷㅏ.",
+			wantErr: assert.NoError,
+		},
+		{
+			name: "without whitespace",
+			args: args{
+				str:                "  ",
+				opt:                SplitOptBasic,
+				ignoreSeparators:   true,
+				ignoreCases:        false,
+				ignoreSpecialChars: false,
+			},
+			want:    "",
+			wantErr: assert.NoError,
+		},
+		{
+			name: "with Alphabet",
+			args: args{
+				str:                "Alphabet is English",
+				opt:                SplitOptBasic,
+				ignoreSeparators:   true,
+				ignoreCases:        true,
+				ignoreSpecialChars: false,
+			},
+			want:    "alphabetisenglish",
+			wantErr: assert.NoError,
+		},
+		{
+			name: "with Special Characters",
+			args: args{
+				str:                "!@#$%^&*()-_=+[]{}\\|;:'\",<.>/?`~",
+				opt:                SplitOptBasic,
+				ignoreSeparators:   true,
+				ignoreCases:        true,
+				ignoreSpecialChars: true,
+			},
+			want:    "",
+			wantErr: assert.NoError,
+		},
+		{
+			name: "with Special Characters and WhiteSpaces and Alphabet and Korean",
+			args: args{
+				str:                "한글 !@#$%^&*()-_=+[]{}\\|;:'\",<.>/?`~12345Alphabet",
+				opt:                SplitOptBasic,
+				ignoreSeparators:   true,
+				ignoreCases:        true,
+				ignoreSpecialChars: true,
+			},
+			want:    "ㅎㅏㄴㄱㅡㄹ12345alphabet",
+			wantErr: assert.NoError,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := SplitToString(tt.args.str, tt.args.opt, tt.args.ignoreSeparators, tt.args.ignoreCases, tt.args.ignoreSpecialChars)
+			if !tt.wantErr(t, err, fmt.Sprintf("SplitToString(%v, %v, %v, %v, %v)", tt.args.str, tt.args.opt, tt.args.ignoreSeparators, tt.args.ignoreCases, tt.args.ignoreSpecialChars)) {
+				return
+			}
+			assert.Equalf(t, tt.want, got, "SplitToString(%v, %v, %v, %v, %v)", tt.args.str, tt.args.opt, tt.args.ignoreSeparators, tt.args.ignoreCases, tt.args.ignoreSpecialChars)
+		})
+	}
 }
