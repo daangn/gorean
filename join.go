@@ -80,5 +80,5 @@ func JoinTokens(tokens []string) (string, error) {
 	for _, r := range word {
 		sum += r
 	}
-	return string(sum), nil
+	return string(rune(sum)), nil
 }
