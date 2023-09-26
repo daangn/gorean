@@ -8,8 +8,17 @@ import (
 type SplitOpt int16
 
 const (
-	WhitespaceAscii          = 32
-	SplitOptBasic   SplitOpt = iota
+	DecimalWhitespace        = 32
+	DecimalExclamationMark   = 33
+	DecimalSlash             = 47
+	DecimalColon             = 58
+	DecimalAt                = 64
+	DecimalLeftSquareBracket = 91
+	DecimalGraveAccent       = 96
+	DecimalLeftCurlyBracket  = 123
+	DecimalTilde             = 126
+
+	SplitOptBasic SplitOpt = iota
 	SplitOptGetOnlyKorean
 )
 
@@ -21,13 +30,13 @@ func SplitToString(str string, opt SplitOpt, ignoreSeparators, ignoreCases, igno
 	runes := []rune(str)
 	var buf bytes.Buffer
 	for _, r := range runes {
-		hex, err := runeToHexInt64(r)
+		decimal, err := runeToHexInt64(r)
 		if err != nil {
-			return "", fmt.Errorf("[%d] at [%s] cannot admit to hex value", r, str)
+			return "", fmt.Errorf("[%d] at [%s] cannot admit to decimal value", r, str)
 		}
 
 		// if alphabet and ignoreCases set true, change to lower case
-		if hex >= 65 && hex <= 90 {
+		if decimal >= 65 && decimal <= 90 {
 			if ignoreCases == true {
 				buf.WriteString(string(r + 32))
 			} else {
@@ -53,6 +62,7 @@ func SplitToString(str string, opt SplitOpt, ignoreSeparators, ignoreCases, igno
 				-		45
 				.		46
 				/		47
+
 				:		58
 				;		59
 				<		60
@@ -60,40 +70,42 @@ func SplitToString(str string, opt SplitOpt, ignoreSeparators, ignoreCases, igno
 				>		62
 				?		63
 				@		64
+
 				[		91
 				\		92
 				]		93
 				^		94
 				_		95
 				`		96
+
 				{		123
 				|		124
 				}		125
 				~		126
 		*/
 		if ignoreSpecialChars == true {
-			if hex >= 33 && hex <= 47 {
+			if decimal >= DecimalExclamationMark && decimal <= DecimalSlash {
 				continue
 			}
-			if hex >= 58 && hex <= 64 {
+			if decimal >= DecimalColon && decimal <= DecimalAt {
 				continue
 			}
-			if hex >= 91 && hex <= 96 {
+			if decimal >= DecimalLeftSquareBracket && decimal <= DecimalGraveAccent {
 				continue
 			}
-			if hex >= 123 && hex <= 126 {
+			if decimal >= DecimalLeftCurlyBracket && decimal <= DecimalTilde {
 				continue
 			}
 		}
 
-		if hex == WhitespaceAscii {
+		if decimal == DecimalWhitespace {
 			if ignoreSeparators == false {
 				buf.WriteString(string(r))
 			}
 			continue
 		}
 
-		if dist := getDistanceKorean(hex); dist != -1 {
+		if dist := getDistanceKorean(decimal); dist != -1 {
 			chosungIndex := getChosungIndex(dist)
 			jungsungIndex := getJungsungIndex(dist)
 			jongsungIndex := getJongsungIndex(dist)
@@ -132,7 +144,7 @@ func Split(str string, opt SplitOpt) ([][]string, error) {
 			if jongsungIndex != 0 {
 				tokens = append(tokens, koreanJongsung[jongsungIndex])
 			}
-		} else if hex == WhitespaceAscii { // whitespace
+		} else if hex == DecimalWhitespace { // whitespace
 			words = append(words, []string{string(r)})
 		} else {
 			if opt != SplitOptGetOnlyKorean {
